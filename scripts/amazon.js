@@ -67,7 +67,7 @@ products.forEach((product, index) => {
 document.querySelector(".products-grid").innerHTML = productHTML;
 
 
-//Step 3- make it inerative
+//Step 3- make it inerative : Create a cart list to save the data of our product and quantity
 /*1- Save the data in a list of objects **Cart Quantity**
 2- create a funtion that listen to every click we do on the **add button**, each time we click on it we  me save into our cart variable an object with the id of the product and the quantity
 3- then we display the CartQuantity variable on the webpage
@@ -94,7 +94,15 @@ document.querySelectorAll('.js-add-to-cart') //This is the list of the Add Butto
                     quantity: 1
                 }); 
             }
-            console.log(cart);
+
+            //Save the total count in a variable
+            let cartQuantity = 0;
+            cart.forEach((item) => {
+                cartQuantity += item.quantity;
+            })
+
+            document.querySelector('.js-cart-quantity')
+                .innerHTML = cartQuantity;
         }); // we have to use the button when we add the event listernet otherwise we are going to run the code for all the products everytime we click on any button
     }    
 );

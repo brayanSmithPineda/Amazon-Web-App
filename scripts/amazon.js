@@ -9,6 +9,7 @@ Steps for javascript:
 /*We saved the data but we decides to save it in separete file products.js so we can keep our code clean */
 //2 Step - Generate the HTML
 import {cart} from '../data/cart.js';
+import { products} from '../data/products.js';
 
 let productHTML = '';
 products.forEach((product, index) => {

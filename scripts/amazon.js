@@ -97,7 +97,6 @@ document.querySelectorAll('.js-add-to-cart') //This is the list of the Add Butto
 
             addToCart(productId);
             updateCartQuantity();
-            console.log(cart); 
         });
     }        
 );

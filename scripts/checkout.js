@@ -107,6 +107,7 @@ document.querySelector(".order-summary").innerHTML = cartSummaryHTML;
 //Make it inerative
 //1 Every time we click on the Delete button, we remove the product
 
+//In order to delete a product, we have to take two step, the first one is to delete it from the cart list we created, and the second step is to delete it from the HTML (for this we have to select the container of the remove product and then use the remove method to delete the html)
 document.querySelectorAll(".js-delete-button")
     .forEach((deleteButton, index) => {
         deleteButton.addEventListener('click', () => {

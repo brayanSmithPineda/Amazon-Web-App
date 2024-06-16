@@ -1,4 +1,13 @@
-export const cart = [];
+export const cart = [
+    {
+        productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+        quantity: 2
+    },
+    {
+        productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+        quantity: 1
+    }
+];
 
 
 //We separete the code into this function, to make our file more organize, this basicaaly take the productId, check if its already in the cart, and add it to the cart list 

@@ -8,8 +8,8 @@ Steps for javascript:
 // 1 Step - Save the data
 /*We saved the data but we decides to save it in separete file products.js so we can keep our code clean */
 //2 Step - Generate the HTML
-import {cart} from '../data/cart.js';
-import { products} from '../data/products.js';
+import {cart, addToCart} from '../data/cart.js';
+import {products} from '../data/products.js';
 
 let productHTML = '';
 products.forEach((product, index) => {
@@ -72,40 +72,30 @@ document.querySelector(".products-grid").innerHTML = productHTML;
 
 //Step 3- make it inerative : Create a cart list to save the data of our product and quantity
 /*1- Save the data in a list of objects **Cart Quantity**
-2- create a funtion that listen to every click we do on the **add button**, each time we click on it we  me save into our cart variable an object with the id of the product and the quantity
+2- create a funtion that listen to every click we do on the **add button**, each time we click on it we save into our cart variable an object with the id of the product and the quantity
 3- then we display the CartQuantity variable on the webpage
 */
+
+//We do not move this function to the cart module because it updates the webpage
+function updateCartQuantity(){
+    //Save the total count in a variable
+    let cartQuantity = 0;
+    cart.forEach((item) => {
+        cartQuantity += item.quantity;
+    })
+
+    document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuantity;
+     // we have to use the button when we add the event listernet otherwise we are going to run the code for all the products everytime we click on any button
+}
+
 document.querySelectorAll('.js-add-to-cart') //This is the list of the Add Buttons  
     .forEach((button) => {
         button.addEventListener('click', () => {
-            const productId = button.dataset.productId;  // the dataset property return all the data attributes associated witht he button, when we use .productName we are returning just the name data attribute
+            const productId = button.dataset.productId;  // the dataset property return all the data attributes associated with the button, when we use .productId we are returning just the id data attribute
 
-            //we first check if the item is already in our cart so we just increase the quantity, else we add it to the cart
-            let item;
-            cart.forEach((itemObject) => {
-                // console.log(itemObject);
-                if (productId === itemObject.productId){
-                    item = itemObject;
-                }
-            });
-
-            if (item){
-                item.quantity ++;
-            } else {
-                cart.push({
-                    productId: productId,
-                    quantity: 1
-                }); 
-            }
-
-            //Save the total count in a variable
-            let cartQuantity = 0;
-            cart.forEach((item) => {
-                cartQuantity += item.quantity;
-            })
-
-            document.querySelector('.js-cart-quantity')
-                .innerHTML = cartQuantity;
-        }); // we have to use the button when we add the event listernet otherwise we are going to run the code for all the products everytime we click on any button
-    }    
+            addToCart(productId);
+            updateCartQuantity();
+        });
+    }        
 );

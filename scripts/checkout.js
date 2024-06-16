@@ -6,9 +6,9 @@ Steps to use javascript:
 3- Make it ineractive
 */
 
-//1- Collect the data: Information about the products that we add to our cart, Image, the name , price and quantity
+//1- Collect the data: Information about the products that we add to our cart, Image, the name , price and quantity, we already have this data in the cart and products modules, so we just re-use it
 
-import {cart} from "../data/cart.js";
+import {cart, removeFromCart} from "../data/cart.js";
 import {products} from "../data/products.js";
 import { formatCurrency } from "./utils/formatingMoney.js";
 
@@ -46,7 +46,7 @@ cart.forEach((cartItem, index) => {
                 <span class="update-quantity-link link-primary">
                 Update
                 </span>
-                <span class="delete-quantity-link link-primary">
+                <span class="delete-quantity-link link-primary js-delete-button" data-product-id = ${matchingProduct.id}>
                 Delete
                 </span>
             </div>
@@ -103,3 +103,14 @@ cart.forEach((cartItem, index) => {
 });
 
 document.querySelector(".order-summary").innerHTML = cartSummaryHTML;
+
+//Make it inerative
+//1 Every time we click on the Delete button, we remove the product
+
+document.querySelectorAll(".js-delete-button")
+    .forEach((deleteButton, index) => {
+        deleteButton.addEventListener('click', () => {
+            const attributeProductId = deleteButton.dataset.productId;
+            removeFromCart(attributeProductId);
+        });
+    });

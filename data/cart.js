@@ -58,3 +58,22 @@ export function removeFromCart(productId){
     //here we are modyfing the cart object, so we have to use localStorage
     saveToLocalStorage();
 };
+
+//This function updates the delivery option, this function need to identify which product or cart item we are going to change the deliveryoption id, we identitfy that item with the product id, after identifying which cart item we are going to update then we modify the deliveryoptionid
+
+export function updateDeliveryOption(productId, deliveryOptionId){
+
+    let matchingItem;
+    cart.forEach((cartItem, index) =>{
+        if (cartItem.productId === productId){
+            matchingItem = cartItem;
+        }
+    });
+    /*
+    This directly modifies the object within the cart array because matchingItem is a reference to the object in the array, not a copy. That's why we have to save the cart in local storage
+    */
+
+    matchingItem.deliveryOptionId = deliveryOptionId;
+    
+    saveToLocalStorage();
+};

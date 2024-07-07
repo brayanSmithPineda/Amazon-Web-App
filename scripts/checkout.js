@@ -8,7 +8,7 @@ Steps to use javascript:
 
 //1- Collect the data: Information about the products that we add to our cart, Image, the name , price and quantity, we already have this data in the cart and products modules, so we just re-use it
 
-import {cart, removeFromCart} from "../data/cart.js";
+import {cart, removeFromCart, updateDeliveryOption} from "../data/cart.js";
 import {products} from "../data/products.js";
 import {formatCurrency} from "./utils/formatingMoney.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -26,12 +26,13 @@ cart.forEach((cartItem, index) => {
         }
     });
 
+    //This part of the code generate the Delivery Title, it first determines the delivery option that we choose, then they add the days corresponding to that option
     const deliveryOptionId = cartItem.deliveryOptionId;
     let deliveryOption;
     deliveryOptions.forEach((option, index) =>{
-        if(option.Id === deliveryOptionId){
+        if(option.id === deliveryOptionId){
             deliveryOption = option;
-        }
+        };
     });
 
     const today = dayjs();
@@ -98,7 +99,8 @@ document.querySelectorAll(".js-delete-button")
 
             productContainer.remove();
         });
-    });
+    }
+);
 
 
 // we are going to generate and create the delivery options (date and delivery price) and we are going to update the delivery title,along with the order summary
@@ -128,10 +130,10 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
         const priceString = (deliveryOption.deliveryPrice === 0) ? 'FREE' : `$${formatCurrency(deliveryOption.deliveryPrice)} -`;
 
         //This isChecked variable ckecked which delivery option is check, in each iteration this variable is false or true, when the option is checke or not, when its true we add the checked attribute to the input HTML so it appears check
-        const isChecked = cartItem.deliveryOptionId === deliveryOption.Id;
+        const isChecked = cartItem.deliveryOptionId === deliveryOption.id;
 
         html += `
-        <div class="delivery-option">
+        <div class="delivery-option js-delivery-option" data-product-id="${matchingProduct.id}" data-delivery-option-id="${deliveryOption.id}">
             <input type="radio"
             class="delivery-option-input"
             ${isChecked ?'checked':''}
@@ -149,3 +151,12 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
     })  
     return html;
 };
+
+document.querySelectorAll('.js-delivery-option')
+    .forEach((deliveryOption, index) => {
+        deliveryOption.addEventListener('click', () => {
+            const {productId, deliveryOptionId} = deliveryOption.dataset;
+            updateDeliveryOption(productId, deliveryOptionId);
+        });
+    }
+);

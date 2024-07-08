@@ -13,6 +13,7 @@ import {products, getProduct} from "../../data/products.js";
 import {formatCurrency} from "../utils/formatingMoney.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions} from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 //This outer function is re run, everytime we change the data, that we the page is always updated everytime we change something, like the title of the delivery option.
 export function renderOrderSummary(){
@@ -22,7 +23,7 @@ export function renderOrderSummary(){
     cart.forEach((cartItem, index) => {
         const productId = cartItem.productId;
 
-        let matchingProduct = getProduct();
+        let matchingProduct = getProduct(productId);
 
         //This part of the code generate the Delivery Title, it first determines the delivery option that we choose, then they add the days corresponding to that option
         const deliveryOptionId = cartItem.deliveryOptionId;
@@ -96,6 +97,7 @@ export function renderOrderSummary(){
                 const productContainer = document.querySelector(`.js-cart-item-container-${attributeProductId}`);
 
                 productContainer.remove();
+                renderPaymentSummary();
             });
         }
     );
@@ -156,6 +158,7 @@ export function renderOrderSummary(){
                 const {productId, deliveryOptionId} = deliveryOption.dataset;
                 updateDeliveryOption(productId, deliveryOptionId);
                 renderOrderSummary();
+                renderPaymentSummary();
             });
         }
     );

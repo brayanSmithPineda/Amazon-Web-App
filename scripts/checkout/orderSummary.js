@@ -9,7 +9,7 @@ Steps to use javascript:
 //1- Collect the data: Information about the products that we add to our cart, Image, the name , price and quantity, we already have this data in the cart and products modules, so we just re-use it
 
 import {cart, removeFromCart, updateDeliveryOption} from "../../data/cart.js";
-import {products} from "../../data/products.js";
+import {products, getProduct} from "../../data/products.js";
 import {formatCurrency} from "../utils/formatingMoney.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions} from "../../data/deliveryOptions.js";
@@ -22,12 +22,7 @@ export function renderOrderSummary(){
     cart.forEach((cartItem, index) => {
         const productId = cartItem.productId;
 
-        let matchingProduct;
-        products.forEach((product, index) => {        
-            if (product.id === productId){
-                matchingProduct = product;
-            }
-        });
+        let matchingProduct = getProduct();
 
         //This part of the code generate the Delivery Title, it first determines the delivery option that we choose, then they add the days corresponding to that option
         const deliveryOptionId = cartItem.deliveryOptionId;

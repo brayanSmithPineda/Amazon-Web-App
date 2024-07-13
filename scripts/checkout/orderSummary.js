@@ -12,7 +12,7 @@ import {cart, removeFromCart, updateDeliveryOption} from "../../data/cart.js";
 import {products, getProduct} from "../../data/products.js";
 import {formatCurrency} from "../utils/formatingMoney.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import {deliveryOptions} from "../../data/deliveryOptions.js";
+import {deliveryOptions, getDeliveryOption} from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
 //This outer function is re run, everytime we change the data, that we the page is always updated everytime we change something, like the title of the delivery option.
@@ -23,23 +23,18 @@ export function renderOrderSummary(){
     cart.forEach((cartItem, index) => {
         const productId = cartItem.productId;
 
-        let matchingProduct = getProduct(productId);
+        const matchingProduct = getProduct(productId);
 
         //This part of the code generate the Delivery Title, it first determines the delivery option that we choose, then they add the days corresponding to that option
         const deliveryOptionId = cartItem.deliveryOptionId;
-        let deliveryOption;
-        deliveryOptions.forEach((option, index) =>{
-            if(option.id === deliveryOptionId){
-                deliveryOption = option;
-            };
-        });
+        const deliveryOption = getDeliveryOption(deliveryOptionId);
 
         const today = dayjs();
         const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
         const dateString = deliveryDate.format('dddd, MMMM D');
         
-        const html = `
-        <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+        cartSummaryHTML += `
+        <div class="cart-item-container js-cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
                 Delivery date: ${dateString}
             </div>
@@ -55,14 +50,14 @@ export function renderOrderSummary(){
                     <div class="product-price">
                         $${formatCurrency(matchingProduct.priceCents)}
                     </div>
-                    <div class="product-quantity">
+                    <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                         <span>
                         Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                         </span>
                         <span class="update-quantity-link link-primary">
                         Update
                         </span>
-                        <span class="delete-quantity-link link-primary js-delete-button" data-product-id = ${matchingProduct.id}>
+                        <span class="delete-quantity-link link-primary js-delete-button js-delete-link-${matchingProduct.id}" data-product-id = ${matchingProduct.id}>
                         Delete
                         </span>
                     </div>
@@ -76,33 +71,8 @@ export function renderOrderSummary(){
                 </div>
             </div>
         </div>
-        `;
-        cartSummaryHTML += html;
+        `;      
     });
-
-    document.querySelector(".order-summary").innerHTML = cartSummaryHTML;
-
-    //Make it inerative
-    //1 Every time we click on the Delete button, we remove the product
-
-    //In order to delete a product, we have to take two step, the first one is to delete it from the cart list we created, and the second step is to delete it from the HTML (for this we have to select the container of the remove product and then use the remove method to delete the html)
-    document.querySelectorAll(".js-delete-button")
-        .forEach((deleteButton, index) => {
-            deleteButton.addEventListener('click', () => {
-                //we first delete the product from the cart variable
-                const attributeProductId = deleteButton.dataset.productId;
-                removeFromCart(attributeProductId);
-
-                // and then we delete the html
-                const productContainer = document.querySelector(`.js-cart-item-container-${attributeProductId}`);
-
-                productContainer.remove();
-                renderPaymentSummary();
-            });
-        }
-    );
-
-
     // we are going to generate and create the delivery options (date and delivery price) and we are going to update the delivery title,along with the order summary
 
     /* 
@@ -148,9 +118,29 @@ export function renderOrderSummary(){
                 </div>
             </div>
             `
-        })  
+        }); 
         return html;
     };
+
+    document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
+        //Make it inerative
+    //1 Every time we click on the Delete button, we remove the product
+
+    //In order to delete a product, we have to take two step, the first one is to delete it from the cart list we created, and the second step is to delete it from the HTML (for this we have to select the container of the remove product and then use the remove method to delete the html)
+    document.querySelectorAll(".js-delete-button")
+        .forEach((deleteButton, index) => {
+            deleteButton.addEventListener('click', () => {
+                //we first delete the product from the cart variable
+                const attributeProductId = deleteButton.dataset.productId;
+                removeFromCart(attributeProductId);
+
+                // and then we delete the html
+                const productContainer = document.querySelector(`.js-cart-item-container-${attributeProductId}`);
+
+                productContainer.remove();
+                renderPaymentSummary();
+            });
+        });
 
     document.querySelectorAll('.js-delivery-option')
         .forEach((deliveryOption, index) => {
@@ -160,6 +150,5 @@ export function renderOrderSummary(){
                 renderOrderSummary();
                 renderPaymentSummary();
             });
-        }
-    );
+        });
 };

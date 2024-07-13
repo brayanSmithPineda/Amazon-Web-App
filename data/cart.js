@@ -6,28 +6,25 @@ export let cart;
 loadFromStorage();
 
 export function loadFromStorage(){
-    cart =  JSON.parse(localStorage.getItem('cart')) 
+    cart =  JSON.parse(localStorage.getItem('cart'));
     
-    if(!cart) {
-        cart = [
-        {
-            productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-            quantity: 1,
-            deliveryOptionId: '1'
-        },
-        {
-            productId:"15b6fc6f-327a-4ec4-896f-486349e85a3d",
-            quantity: 2,
-            deliveryOptionId: '2'
-        }
-        ];
+    if (!cart) {
+        cart = [{
+          productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+          quantity: 2,
+          deliveryOptionId: '1'
+        }, {
+          productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+          quantity: 1,
+          deliveryOptionId: '2'
+        }];
     };
 };
 
 function saveToLocalStorage(){
     //we create this function to save the cart data into local storage, that way we could mantain the data even if you refresh the page, if we do not do this, then when changing from the amazon main page to the checkout the product items are not going to appear
-    localStorage.setItem('cart', JSON.stringify(cart))
-}
+    localStorage.setItem('cart', JSON.stringify(cart));
+};
 
 //We separete the code into this function, to make our file more organize, this basicaaly take the productId, check if its already in the cart, and add it to the cart list 
 export function addToCart(productId){

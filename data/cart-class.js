@@ -5,12 +5,18 @@ class Cart{
  
     //if local storage is none then we just create and empty list for the car
     cartItems = undefined;
-    localStorageKey = undefined;
+    #localStorageKey = undefined;
+
+    constructor(localStorageKey){
+        this.#localStorageKey = localStorageKey;
+        
+        this.loadFromStorage();
+    };
 
     loadFromStorage(){
         //This is referring to the outer object, we use this word so it will always work even if we change the name of the object
         //we create a new list cart-oop so we don't mess the actual local storage
-        this.cartItems =  JSON.parse(localStorage.getItem(this.localStorageKey));
+        this.cartItems =  JSON.parse(localStorage.getItem(this.#localStorageKey));
         
         if (!this.cartItems) {
             this.cartItems = [{
@@ -27,7 +33,7 @@ class Cart{
 
     saveToLocalStorage(){
         //we create this function to save the cart data into local storage, that way we could mantain the data even if you refresh the page, if we do not do this, then when changing from the amazon main page to the checkout the product items are not going to appear
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     };
 
     //We separete the code into this function, to make our file more organize, this basicaaly take the productId, check if its already in the cart, and add it to the cart list 
@@ -90,12 +96,7 @@ class Cart{
 };
 const cart = new Cart();
 const businessCart = new Cart();
-
-cart.localStorageKey = 'cart-oop';
-businessCart.localStorageKey = 'cart-business';
-
-cart.loadFromStorage();
-businessCart.loadFromStorage();
+cart.#localStorageKey = 'aaa';
 
 console.log(cart);
 console.log(businessCart);

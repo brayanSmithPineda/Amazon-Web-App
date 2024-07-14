@@ -10,10 +10,10 @@ class Cart{
     constructor(localStorageKey){
         this.#localStorageKey = localStorageKey;
         
-        this.loadFromStorage();
+        this.#loadFromStorage();
     };
 
-    loadFromStorage(){
+    #loadFromStorage(){
         //This is referring to the outer object, we use this word so it will always work even if we change the name of the object
         //we create a new list cart-oop so we don't mess the actual local storage
         this.cartItems =  JSON.parse(localStorage.getItem(this.#localStorageKey));

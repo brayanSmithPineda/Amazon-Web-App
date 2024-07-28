@@ -13,6 +13,8 @@ import {products, loadProducts} from '../data/products.js';
 import { formatCurrency } from './utils/formatingMoney.js';
 
 loadProducts(renderProductsGrid);
+
+//we create a function to pass to the load products becuase is do not do that the code of the amazon.js will execute immediately after the send the http request, and the webpage is not going to display anthing since the backed do not gives us the response immediately, so what are we going to do is execute all these code after we have the response, we do that by put all the code in a function and then execute the code afte the response, this thecnice where we pass a function as an argument to another function to run in the future is called callback
 function renderProductsGrid(){
     let productHTML = '';
     products.forEach((product, index) => {

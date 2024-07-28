@@ -1,18 +1,21 @@
-//Object Oriented programming is just a way to write code, we basically write code using objects {}, all of out functions, variables, etc, goes into a dictionary
+//Object Oriented programming is just a way to write code, we basically write code using objects {}, all the code: functions, variables, etc, goes into a dictionary
 
-//in order to create multiple carts without repeating the code we use a function (in OOP we use Pascal convention), we use the localStorage Key as a parameter, so the carts do not share the same data of the cart from localStorage, so it can have different quantity of items in the cart
+//in order to create multiple carts without repeating the code we use a class, inside the class we have all the methods, variables, etc. Now every object (carts) that we generate with the Cart class will have access to all the methods, objects and variables. 
 class Cart{
  
-    //if local storage is none then we just create and empty list for the car
+    //we initilize cartItems and localStorage as undefined, local storage beacuase every cart that we generate must be save in a different location, if we use the same localStorage then we are going to mess the data of every car. and CartItems should be set as undefi in orde create the variable in case none items are passed to the object, is cartItems in undefined then it wiil just create thw two default items we set later. the proprties here (variables) do not use the let or const keywords
     cartItems = undefined;
+    //localStoragekey is a proporty that is usefull inside the class, so in order to only be accesed inside the class we made this attribute private with the # sign
     #localStorageKey = undefined;
 
+    // a constructor lets us create some set up code, code that needs to run everytime we crate an object, in this case the localstorage and loadfromstorage are two things we need to do with each object, the localstorage we need it to set up in order to have a location to save the data, and then we need to load the cartitem into localStorage with the function, to pass the input to the class we just past the pareameter in the constructor, in this case the localStorageKey const cart = new Cart('localStorageKey'), this code will always run everytime we create an object
     constructor(localStorageKey){
         this.#localStorageKey = localStorageKey;
         
         this.#loadFromStorage();
     };
 
+    // this is private method, it can olny be accesed inside the class
     #loadFromStorage(){
         //This is referring to the outer object, we use this word so it will always work even if we change the name of the object
         //we create a new list cart-oop so we don't mess the actual local storage
@@ -96,7 +99,6 @@ class Cart{
 };
 const cart = new Cart();
 const businessCart = new Cart();
-cart.#localStorageKey = 'aaa';
 
 console.log(cart);
 console.log(businessCart);

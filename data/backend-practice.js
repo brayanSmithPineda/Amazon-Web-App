@@ -1,7 +1,7 @@
-// Get to rquest the data or information that is the backed
+// This create a new HTTP message to send to the backend, also known as a request, 
 const xhr = new XMLHttpRequest();
 
-//Here we get the response of the backend, this code just runs when the response is loaded.
+//Once we set the parameters, we get the response of the backend, this code just runs when the response is loaded. we use the event listener to run when the response is loaded, once is loaded the we execute the code inside the brackets, this code console.log the response from the backend
 xhr.addEventListener('load', () => {
     console.log(xhr.response);
 });

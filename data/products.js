@@ -18,6 +18,7 @@ class Product{
   rating;
   priceCents;
 
+  //productDetails is all the object with the details of the product (id, image, name ...), so every time we create a product object we have to pass an object of the details of the product
   constructor(productDetails){
     this.id = productDetails.id;
     this.image = productDetails.image;
@@ -39,6 +40,7 @@ class Product{
   }
 };
 
+//we use inheratance with the extends keyword to create a new class that is going to have all the propoerties and mehtods of the parent class, the constructor is not passed down so we have to specified that in the child constructor with the super() method
 class Clothes extends Product {
   sizeChartLink;
 
@@ -47,6 +49,7 @@ class Clothes extends Product {
     this.sizeChartLink = productDetails.sizeChartLink;
   }
 
+  // this html code is display the homepage is going to be generated only for those products that has the sizeChartLink, the product Class has this value as empty
   extraInfoHTML(){
     return `
       <a href="${this.sizeChartLink}" target="_blank">
@@ -57,10 +60,13 @@ class Clothes extends Product {
 }
 
 export let products = [];
-export function loadProducts(fun){
+export function loadProducts(renderProducstGrid){
   const xhr =  new XMLHttpRequest();
   
   xhr.addEventListener('load', () => {
+
+    //Once we conver the respose back to javascript object we save the data in the products variable 
+    //in order to converts all the object into a class object we loop thorugh the list of objects(response) with the map(runs a function with each object in the array) function and we create the object with its correspondig class 
     products = JSON.parse(xhr.response).map((productDetails) => {
       if(productDetails.type === 'clothing'){
         return new Clothes(productDetails);
@@ -68,7 +74,8 @@ export function loadProducts(fun){
       return new Product(productDetails);
     });
 
-    fun();
+    //we execute the code of the amazon.js after we get the response from the backend, basically we recieve a function as an input, we get the response from the backed and the then we run the function
+    renderProducstGrid();
   });
 
 

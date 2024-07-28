@@ -7,6 +7,7 @@ describe('test suite: renderOrderSummary', () => {
     const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
 
     beforeAll((done) => {
+        //we need to load the products in order that the renderOrderSummary works, as we need to waite until the backed gives us the response then we use the done() function which just go the the next line after we get the response
         loadProducts(() => {
             done();
         });

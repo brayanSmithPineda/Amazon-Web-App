@@ -1,6 +1,7 @@
 import {renderOrderSummary} from "./checkout/orderSummary.js";
 import {renderPaymentSummary} from "./checkout/paymentSummary.js";
 import {loadProducts} from "../data/products.js";
+import { loadCart } from "../data/cart.js";
 // import '../data/cart-class.js';
 // import '../data/backend-practice.js';
 
@@ -14,7 +15,37 @@ Passing a Function as an Argument: This anonymous function is passed as an argum
 
 Callback Execution: Inside loadProducts, once the asynchronous operation (data fetching) completes, it calls the passed function (the callback). Since the callback itself contains calls to renderOrderSummary() and renderPaymentSummary(), executing the callback effectively runs both these functions in sequence.
 */
+//Promises are a way to execute asyncronis code, just like callbacks, in this case a Promise is a class that recive as input a function, and the parameter is also a resolve function. So inside the promise, we waite to the loadProducst to receive the response from the backend,  When you pass resolve as a callback to loadProducts, what you're effectively doing is telling loadProducts to resolve the promise once it has finished loading and processing the products. Once it has finished then you execute the renderOrderSummary and the renderPaymentSummary, here we used callbacks in the loadProducts function and Promises in conjuntion.
+
+Promise.all([
+    new Promise((resolve) => {
+        loadProducts(() =>{
+            resolve();
+        });
+    }),
+    new Promise((resolve) => {
+        loadCart(() =>{
+            resolve();
+        });
+    })
+]).then(() => {
+    renderOrderSummary();
+    renderPaymentSummary();
+});
+
+/*
+new Promise((resolve) => {
+    loadProducts(() =>{
+        resolve();
+    });
+}).then(() => {
+    renderOrderSummary();
+    renderPaymentSummary(); 
+})
+*/
+/*
 loadProducts(() => {
     renderOrderSummary();
     renderPaymentSummary();    
 })
+*/

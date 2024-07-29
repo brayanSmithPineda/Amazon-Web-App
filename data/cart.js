@@ -84,3 +84,18 @@ export function updateDeliveryOption(productId, deliveryOptionId){
     
     saveToLocalStorage();
 };
+
+//Practice code for promises, this code does not do anything to the website
+
+export function loadCart(renderProducstGrid){
+  const xhr =  new XMLHttpRequest();
+  
+  xhr.addEventListener('load', () => {
+    console.log(xhr.response);
+    renderProducstGrid();
+  });
+
+
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();
+};

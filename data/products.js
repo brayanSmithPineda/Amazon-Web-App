@@ -59,7 +59,28 @@ class Clothes extends Product {
   }
 }
 
+//making an HTTP Request with the fecth function, this function uses promises instead of callbacks
 export let products = [];
+export function loadProductsFecth(){
+  //fetch uses as default GET request
+  const promise = fetch('https://supersimplebackend.dev/products').then((response) => {
+    return response.json();
+    //the response that json, takes the data of the products an automatically tunrs it in javascript object, insted of using parse
+  }).then((productsData) => {
+    products = productsData.map((productDetails) => {
+      if(productDetails.type === 'clothing'){
+        return new Clothes(productDetails);
+      };
+      return new Product(productDetails);
+    });
+
+    console.log('load products ');
+  });
+
+  return promise;
+};
+
+
 export function loadProducts(renderProducstGrid){
   const xhr =  new XMLHttpRequest();
   

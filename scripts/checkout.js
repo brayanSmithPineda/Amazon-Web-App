@@ -18,15 +18,29 @@ Passing a Function as an Argument: This anonymous function is passed as an argum
 //Asyn and Await, is just a prefered way to write asyncornis code, just as promises and callbacks
 // we use asyn to convert functions into promises
 async function loadPage(){
-    // we use await to wait until a function is execute or the promise to finosh
-    await loadProductsFecth();
+    // for error handling we use try and cathc, we put the code that can cause an error inside try, and then we catchit and display the message
+    try{
+        //we use throw to manually create an error
 
-    // in this case we do not pass loadCart() beacuase that's not a promise is a callback, so we first have to make the promise
-    await new Promise((resolve) => {
-        loadCart(() =>{
-            resolve();
+        //throw 'Error 1';
+
+        // we use await to wait until a function is execute or the promise to finosh
+        await loadProductsFecth();
+
+        // in this case we do not pass loadCart() beacuase that's not a promise is a callback, so we first have to make the promise
+        await new Promise((resolve, reject) => {
+            //throw 'Error 2'
+            loadCart(() =>{
+                //This reject lets us create an error in the future when the cart is loaded.
+                //eject('Error3');
+                resolve();
+            });
         });
-    });
+
+    } catch (error) {
+        console.log('Unexpected Error, Pleas Try Again Later.');
+    }
+    
 
     //Then we just render or load the page, asyn and await is a way to write asyncronis code as normal code
     renderOrderSummary();

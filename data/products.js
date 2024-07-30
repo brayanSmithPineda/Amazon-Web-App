@@ -75,11 +75,13 @@ export function loadProductsFecth(){
     });
 
     console.log('load products ');
+  }).catch(() => {
+    console.log('Unexpected Error, Pleas Try Again Later.');
   });
 
   return promise;
 };
-
+// loadProductsFecth();
 
 export function loadProducts(renderProducstGrid){
   const xhr =  new XMLHttpRequest();
@@ -99,11 +101,16 @@ export function loadProducts(renderProducstGrid){
     renderProducstGrid();
   });
 
+  //This event listener is for error handling, if we get an error it display unexpected Error: Please try again laiter, so when using callbacks we just use another callback with an eventlistener
+  xhr.addEventListener('error', () => {
+    console.log('Unexpected Error, Pleas Try Again Later.');
+  });
+
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
 };
-// loadProducts();
+//loadProducts();
 /*
 export const products = [
   {
